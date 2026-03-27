@@ -1,6 +1,11 @@
 FROM ubuntu:22.04
 
-RUN apt update && apt install -y git build-essential curl
+RUN apt update && apt install -y \
+    git \
+    build-essential \
+    libssl-dev \
+    zlib1g-dev \
+    curl
 
 RUN git clone https://github.com/TelegramMessenger/MTProxy.git /mtproxy
 
