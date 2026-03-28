@@ -1,22 +1,16 @@
 FROM ubuntu:22.04
 
-RUN apt update && apt install -y \
-    git \
-    build-essential \
-    libssl-dev \
-    zlib1g-dev \
-    curl \
-    ca-certificates
+RUN apt update && apt install -y curl
 
-RUN update-ca-certificates
+WORKDIR /app
 
-RUN git clone https://github.com/TelegramMessenger/MTProxy.git /mtproxy
+# скачиваем готовый бинарник
+RUN curl -L https://github.com/TelegramMessenger/MTProxy/releases/latest/download/mtproto-proxy -o mtproto-proxy
 
-WORKDIR /mtproxy
+RUN chmod +x mtproto-proxy
 
-RUN make -j$(nproc)
-
+# конфиги
 RUN curl -s https://core.telegram.org/getProxyConfig -o proxy-multi.conf
 RUN curl -s https://core.telegram.org/getProxySecret -o proxy-secret
 
-CMD ./objs/bin/mtproto-proxy -u nobody -p 8888 -H 10000 -S $SECRET --aes-pwd proxy-secret proxy-multi.conf -M 1
+CMD ./mtproto-proxy -u nobody -p 8888 -H 10000 -S $SECRET --aes-pwd proxy-secret proxy-multi.conf -M 1
