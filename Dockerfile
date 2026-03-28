@@ -13,4 +13,4 @@ RUN chmod +x mtproto-proxy
 RUN curl -s https://core.telegram.org/getProxyConfig -o proxy-multi.conf
 RUN curl -s https://core.telegram.org/getProxySecret -o proxy-secret
 
-CMD ./mtproto-proxy -u nobody -p 8888 -H 10000 -S $SECRET --aes-pwd proxy-secret proxy-multi.conf -M 1
+CMD ./mtproto-proxy -u nobody -p 8888 -H 80 -S $SECRET --aes-pwd proxy-secret proxy-multi.conf -M 1
