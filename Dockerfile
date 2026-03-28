@@ -5,13 +5,16 @@ RUN apt update && apt install -y \
     build-essential \
     libssl-dev \
     zlib1g-dev \
-    curl
+    curl \
+    ca-certificates
+
+RUN update-ca-certificates
 
 RUN git clone https://github.com/TelegramMessenger/MTProxy.git /mtproxy
 
 WORKDIR /mtproxy
 
-RUN make
+RUN make -j$(nproc)
 
 RUN curl -s https://core.telegram.org/getProxyConfig -o proxy-multi.conf
 RUN curl -s https://core.telegram.org/getProxySecret -o proxy-secret
